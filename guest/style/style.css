@@ -1,0 +1,66 @@
+@font-face {
+  font-family: "Staatliches";
+  src: url("./../assets/Staatliches-Regular.ttf");
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("./../assets/Poppins-Regular.ttf");
+}
+body {
+  background-color: #303446;
+  color: #c6d0f5;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  padding: 3rem;
+}
+body h1 {
+  font-family: "Staatliches", sans-serif;
+  font-size: 4rem;
+}
+body .input {
+  font-family: "Poppins", sans-serif;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+  overflow: hidden;
+  max-width: 32em;
+}
+body .input textarea {
+  background-color: #292c3c;
+  border: #232634;
+  color: #c6d0f5;
+  font-family: "Poppins", sans-serif;
+  padding: 8px;
+  width: 100%;
+}
+body .input textarea::-moz-placeholder {
+  color: #a5adce;
+}
+body .input textarea::placeholder {
+  color: #a5adce;
+}
+body .input input {
+  background-color: #8caaee;
+  outline: none;
+  border: none;
+  font-family: "Poppins", sans-serif;
+  padding: 8px;
+  transition: 0.1s;
+}
+body .input input[type=button] {
+  background-color: #85c1dc;
+  cursor: pointer;
+  color: #303446;
+}
+body .input input[type=text] {
+  background-color: #292c3c;
+  color: #c6d0f5;
+}
+body .input input[type=text]::-moz-placeholder {
+  color: #a5adce;
+}
+body .input input[type=text]::placeholder {
+  color: #a5adce;
+}/*# sourceMappingURL=style.css.map */

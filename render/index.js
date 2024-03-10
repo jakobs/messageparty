@@ -1,8 +1,14 @@
-const PORT = 4538;
-const wsURL = `ws://localhost:${PORT}/render`;
+const wsURL = `ws://${location.host}/render`;
 const ws = new WebSocket(wsURL);
 
+let currentMessage = null;
+
 function createNewMessage(messageText, authorName) {
+	if (currentMessage !== null) {
+		currentMessage.remove();
+		currentMessage = null;
+	}
+
 	const container = document.getElementById("container");
 	const newMessage = document.createElement("div");
 	newMessage.classList.add("message-container");
@@ -20,16 +26,19 @@ function createNewMessage(messageText, authorName) {
 	newMessage.appendChild(message);
 
 	container.appendChild(newMessage);
-
-	setTimeout(() => {
-		newMessage.remove();
-	}, 10000);
+	currentMessage = newMessage;
 }
 
 ws.onmessage = (event) => {
 	console.log(event.data);
 	const data = JSON.parse(event.data);
-	createNewMessage(data.msg, data.author);
+	if (data.type === "message") {
+		createNewMessage(data.msg, data.author);
+	} else if (data.type === "clear") {
+		if (currentMessage === null) return;
+		currentMessage.remove();
+		currentMessage = null;
+	}
 };
 
 setInterval(() => {

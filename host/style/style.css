@@ -70,6 +70,13 @@ body .input input[type=button] {
 body .input input[type=button]:hover {
   background-color: #85c1dc;
 }
+body .input #clear {
+  background-color: #e78284;
+  margin-top: 8px;
+}
+body .input #clear:hover {
+  background-color: #ea999c;
+}
 body .proposed-messages {
   display: flex;
 }

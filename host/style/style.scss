@@ -90,6 +90,13 @@ body {
 				background-color: $sapphire;
 			}
 		}
+		#clear {
+			background-color: $red;
+			margin-top: 8px;
+			&:hover {
+				background-color: $maroon;
+			}
+		}
 	}
 	.proposed-messages {
 		display: flex;

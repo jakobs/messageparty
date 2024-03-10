@@ -1,12 +1,11 @@
-const PORT = 4538;
-const wsURL = `ws://localhost:${PORT}/guest`;
+const wsURL = `ws://${location.host}/guest`;
 const ws = new WebSocket(wsURL);
 
 document.getElementById("send").onclick = () => {
 	const message = document.getElementById("message").value;
 	const author = document.getElementById("author").value;
 
-	if (!message || !author) {
+	if (!message) {
 		return;
 	}
 

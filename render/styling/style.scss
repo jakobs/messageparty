@@ -5,59 +5,84 @@
 @font-face {
 	font-family: "Poppins";
 	src: url("./../assets/Poppins-Regular.ttf");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "Poppins";
+	src: url("./../assets/Poppins-Light.ttf");
+	font-weight: 300;
 }
 
-$rosewater: #f2d5cf;
-$flamingo: #eebebe;
-$pink: #f4b8e4;
-$mauve: #ca9ee6;
-$red: #e78284;
-$maroon: #ea999c;
-$peach: #ef9f76;
-$yellow: #e5c890;
-$green: #a6d189;
-$teal: #81c8be;
-$sky: #99d1db;
-$sapphire: #85c1dc;
-$blue: #8caaee;
-$lavender: #babbf1;
-$text: #c6d0f5;
-$subtext1: #b5bfe2;
-$subtext0: #a5adce;
-$overlay2: #949cbb;
-$overlay1: #838ba7;
-$overlay0: #737994;
-$surface2: #626880;
-$surface1: #51576d;
-$surface0: #414559;
-$base: #303446;
-$mantle: #292c3c;
-$crust: #232634;
+$rosewater: #dc8a78;
+$flamingo: #dd7878;
+$pink: #ea76cb;
+$mauve: #8839ef;
+$red: #d20f39;
+$maroon: #e64553;
+$peach: #fe640b;
+$yellow: #df8e1d;
+$green: #40a02b;
+$teal: #179299;
+$sky: #04a5e5;
+$sapphire: #209fb5;
+$blue: #1e66f5;
+$lavender: #7287fd;
+$text: #4c4f69;
+$subtext1: #5c5f77;
+$subtext0: #6c6f85;
+$overlay2: #7c7f93;
+$overlay1: #8c8fa1;
+$overlay0: #9ca0b0;
+$surface2: #acb0be;
+$surface1: #bcc0cc;
+$surface0: #ccd0da;
+$base: #eff1f5;
+$mantle: #e6e9ef;
+$crust: #dce0e8;
 
 html,
 body {
 	font-family: "Poppins", sans-serif;
+	background-color: black;
 
 	width: 100%;
 	height: 100%;
-	background-color: black;
 	margin: 0;
 
 	display: flex;
 	flex-direction: column;
 	.container {
 		overflow: hidden;
+		padding: 12px;
 		.message-container {
-			background-color: $base;
-			color: $text;
-			padding: 8px;
-			margin: 8px;
-			border-radius: 4px;
+			background-color: #075e54;
+			color: white;
+			padding: 32px;
+			margin-left: 64px;
 
-			animation: message 10s ease-in-out;
+			border-radius: 0 32px 32px 32px;
+			overflow: hidden;
+
+			// transition: all 5s;
+			// animation: message 1s ease-in-out;
+			font-size: 10rem;
+			line-height: 0.9;
+			font-weight: 300;
 			.author {
-				color: $subtext0;
-				font-size: 0.8rem;
+				color: white;
+				font-size: 2rem;
+			}
+			&::before {
+				content: "";
+				position: absolute;
+				width: 64px;
+				height: 64px;
+				transform: translate(calc(-100% - 8px), calc(-50%));
+				background-color: #075e54;
+				clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+				border-radius: 16px 0 0 0;
+				transition: all 5s;
+				z-index: 0;
 			}
 		}
 	}
@@ -66,17 +91,9 @@ body {
 //animation for the messae pop up
 @keyframes message {
 	0% {
-		transform: translateY(-200%);
-	}
-	10% {
-		transform: translateY(0%);
-	}
-	95% {
-		opacity: 1;
-		transform: scaleY(1);
+		height: 0%;
 	}
 	100% {
-		opacity: 0;
-		transform: scaleY(0);
+		height: calc(100% - 24px);
 	}
 }

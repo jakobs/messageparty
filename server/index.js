@@ -5,6 +5,10 @@ require("dotenv").config();
 const app = express();
 expressWs(app);
 
+app.use("/host", express.static("../host"));
+app.use("/guest", express.static("../guest"));
+app.use("/render", express.static("../render"));
+
 // Store connections for each client type
 const guestClients = [];
 let hostClient = null;
@@ -63,10 +67,7 @@ app.ws("/render", (ws, req) => {
 	});
 });
 
-// Serve a simple HTML page for testing
-app.get("/", (req, res) => {
-	res.sendFile(__dirname + "/index.html");
-});
+app.use(express.static("public"));
 
 const PORT = process.env.PORT || 4538;
 app.listen(PORT, () => {

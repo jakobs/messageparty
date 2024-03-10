@@ -1,5 +1,4 @@
-const PORT = 4538;
-const wsURL = `ws://localhost:${PORT}/host`;
+const wsURL = `ws://${location.host}/host`;
 const ws = new WebSocket(wsURL);
 
 document.getElementById("send").onclick = () => {
@@ -11,6 +10,7 @@ document.getElementById("send").onclick = () => {
 	}
 
 	const data = JSON.stringify({
+		type: "message",
 		msg: message,
 		author: author,
 	});
@@ -52,6 +52,7 @@ function addProposedMessage(message, author) {
 		messageCon.remove();
 
 		const data = JSON.stringify({
+			type: "message",
 			msg: messageEl.innerText,
 			author: authorEl.innerText,
 		});
@@ -70,6 +71,15 @@ function addProposedMessage(message, author) {
 
 	messageCon.appendChild(button);
 }
+
+document.getElementById("clear").onclick = () => {
+	const data = JSON.stringify({
+		type: "clear",
+	});
+
+	console.log(data);
+	ws.send(data);
+};
 
 setInterval(() => {
 	//check if the websocket is closed

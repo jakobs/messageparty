@@ -1,3 +1,4 @@
+const { log } = require("console");
 const express = require("express");
 const expressWs = require("express-ws");
 require("dotenv").config();
@@ -17,8 +18,16 @@ let renderClient = null;
 const messages = {};
 let messageIndex = 0;
 
+// open a log file to write the messages into
+const fs = require("fs");
+const path = require("path");
+const logFile = path.join(__dirname, "log.txt");
+// open the file for writing
+const logStream = fs.createWriteStream(logFile, { flags: "a" });
+
 // WebSocket endpoint for guest clients
-app.ws("/guest", (ws, req) => {
+app.ws("/ws/guest", (ws, req) => {
+	console.log("Guest client connected");
 	// Add the guest client to the list
 	guestClients.push(ws);
 
@@ -31,6 +40,9 @@ app.ws("/guest", (ws, req) => {
 		messageIndex++;
 
 		console.log("Message from guest client: " + message);
+		// write the message to the log file
+		logStream.write(message + "\n");
+
 		if (hostClient) {
 			hostClient.send(JSON.stringify(msg));
 		}
@@ -46,12 +58,11 @@ app.ws("/guest", (ws, req) => {
 });
 
 // WebSocket endpoint for host client
-app.ws("/host", (ws, req) => {
+app.ws("/ws/host", (ws, req) => {
 	// Set the host client and forward messages to render client
 	hostClient = ws;
 
 	console.log("Host client connected");
-	console.log(messages);
 	for (const message of Object.values(messages)) {
 		ws.send(JSON.stringify(message));
 	}
@@ -90,7 +101,7 @@ app.ws("/host", (ws, req) => {
 });
 
 // WebSocket endpoint for render client
-app.ws("/render", (ws, req) => {
+app.ws("/ws/render", (ws, req) => {
 	console.log("Render client connected");
 	// Set the render client
 	renderClient = ws;

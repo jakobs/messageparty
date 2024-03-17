@@ -3,6 +3,14 @@ import React from "react";
 export default function MessageInput({ sendMessage, type }) {
 	const MAX_LENGTH = 96;
 
+	function handleMessage() {
+		const author = document.getElementById("author").value;
+		const content = document.getElementById("content").value;
+		document.getElementById("author").value = "";
+		document.getElementById("content").value = "";
+		sendMessage({ author, content });
+	}
+
 	return (
 		<>
 			<input type="text" id="author" placeholder="Absender" />
@@ -24,11 +32,7 @@ export default function MessageInput({ sendMessage, type }) {
 			<input
 				type="button"
 				value={type === "host" ? "Anzeigen" : "Vorschlagen"}
-				onClick={() => {
-					const author = document.getElementById("author").value;
-					const content = document.getElementById("content").value;
-					sendMessage({ author, content });
-				}}
+				onClick={handleMessage}
 			/>
 		</>
 	);

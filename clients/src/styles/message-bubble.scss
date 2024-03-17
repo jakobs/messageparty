@@ -15,16 +15,21 @@
 		background-color: $bubble;
 		border-radius: 0 12px 12px 12px;
 		padding: 2rem;
-		word-wrap: break-word;
+		word-break: break-word;
 		color: white;
+		.author::before {
+			content: "~";
+			margin-right: 0.5rem;
+		}
 		.author {
-			color: white;
+			color: yellow;
 			font-size: 4em;
 			line-height: 1.1em;
 		}
 		.content {
-			font-size: 10.014363em;
+			font-size: 8em;
 			line-height: 1.1em;
+			word-wrap: break-word;
 		}
 	}
 }

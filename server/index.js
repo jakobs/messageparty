@@ -5,14 +5,17 @@ require("dotenv").config();
 const app = express();
 expressWs(app);
 
-app.use("/host", express.static("../host"));
-app.use("/guest", express.static("../guest"));
-app.use("/render", express.static("../render"));
+app.use(express.static("../clients/dist"));
+app.use("/host", express.static("../clients/dist"));
+app.use("/render", express.static("../clients/dist"));
 
 // Store connections for each client type
 const guestClients = [];
 let hostClient = null;
 let renderClient = null;
+
+const messages = {};
+let messageIndex = 0;
 
 // WebSocket endpoint for guest clients
 app.ws("/guest", (ws, req) => {
@@ -20,10 +23,16 @@ app.ws("/guest", (ws, req) => {
 	guestClients.push(ws);
 
 	ws.on("message", (message) => {
-		// Forward guest messages to host client
+		const msg = {
+			...JSON.parse(message),
+			messageIndex,
+		};
+		messages[messageIndex] = msg;
+		messageIndex++;
+
 		console.log("Message from guest client: " + message);
 		if (hostClient) {
-			hostClient.send(message);
+			hostClient.send(JSON.stringify(msg));
 		}
 	});
 
@@ -41,12 +50,37 @@ app.ws("/host", (ws, req) => {
 	// Set the host client and forward messages to render client
 	hostClient = ws;
 
+	console.log("Host client connected");
+	console.log(messages);
+	for (const message of Object.values(messages)) {
+		ws.send(JSON.stringify(message));
+	}
+
 	ws.on("message", (message) => {
-		// Forward host messages to render client
-		console.log("Message from host client: " + message);
-		if (renderClient) {
-			renderClient.send(message);
+		const msg = JSON.parse(message);
+		switch (msg.type) {
+			case "accept":
+				delete messages[msg.messageIndex];
+				if (renderClient) {
+					renderClient.send(JSON.stringify(msg));
+				}
+				break;
+			case "reject":
+				delete messages[msg.messageIndex];
+				break;
+			case "send":
+				if (renderClient) {
+					renderClient.send(JSON.stringify(msg));
+				}
+				break;
+			case "clear":
+				if (renderClient) {
+					renderClient.send(JSON.stringify(msg));
+				}
+				break;
 		}
+
+		console.log("Message from host client: " + message);
 	});
 
 	ws.on("close", () => {
@@ -66,8 +100,6 @@ app.ws("/render", (ws, req) => {
 		renderClient = null;
 	});
 });
-
-app.use(express.static("public"));
 
 const PORT = process.env.PORT || 4538;
 app.listen(PORT, () => {

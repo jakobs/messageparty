@@ -1,0 +1,30 @@
+@import "./theme.scss";
+
+.message-bubble {
+	display: flex;
+	margin: 10px;
+	.speech {
+		background-color: $bubble;
+		width: 48px;
+		height: 32px;
+
+		clip-path: polygon(0% 0%, 100% 0%, 100% 100%);
+	}
+	.main {
+		flex: 1;
+		background-color: $bubble;
+		border-radius: 0 12px 12px 12px;
+		padding: 2rem;
+		word-wrap: break-word;
+		color: white;
+		.author {
+			color: white;
+			font-size: 4em;
+			line-height: 1.1em;
+		}
+		.content {
+			font-size: 10.014363em;
+			line-height: 1.1em;
+		}
+	}
+}

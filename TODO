@@ -1,0 +1,8 @@
+[x] Ensure connection
+[x] Make site reloading not remove content
+[?] add Safari support
+[x] Add mobile support for host
+[x] Make "from" font larger on renderer
+[x] Limit Message lenght
+[x] Play sound on Host
+[ ] make server work

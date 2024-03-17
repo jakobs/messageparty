@@ -1,0 +1,65 @@
+@import "./theme.scss";
+
+.guest,
+.host {
+	height: 100%;
+	h1 {
+		font-family: "Staatliches", sans-serif;
+		font-size: 4em;
+		color: $blue;
+		text-align: center;
+		margin: 0;
+		padding: 1em;
+	}
+	.message-input {
+		display: flex;
+		flex-direction: column;
+		outline: none;
+		padding: 0 32px;
+		.container {
+			display: flex;
+			flex-direction: column;
+			position: relative;
+			textarea {
+				resize: none;
+				height: 6em;
+			}
+			span {
+				position: absolute;
+				bottom: 0;
+				right: 4px;
+				font-size: 0.8em;
+				color: $text;
+			}
+		}
+		*:focus {
+			outline: none;
+		}
+	}
+	.proposal-container {
+		display: flex;
+		flex-direction: column;
+		.proposal {
+			margin: 1em;
+			padding: 1em;
+			background-color: $mantle;
+			border-radius: 12px;
+			word-wrap: break-word;
+			.author {
+				font-size: 1em;
+				color: $blue;
+			}
+			.content {
+				font-size: 1.2em;
+				color: white;
+			}
+			.select {
+				display: flex;
+				gap: 32px;
+				input {
+					flex-grow: 1;
+				}
+			}
+		}
+	}
+}

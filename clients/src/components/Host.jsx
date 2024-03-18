@@ -9,7 +9,7 @@ export default function Host() {
 	const [messages, setMessages] = useState([]);
 
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
-		`ws://${window.location.host}/ws/host`,
+		`wss://${window.location.host}/ws/host`,
 		{
 			share: false,
 			shouldReconnect: () => true,

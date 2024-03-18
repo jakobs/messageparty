@@ -1,10 +1,22 @@
-const { log } = require("console");
-const express = require("express");
-const expressWs = require("express-ws");
-require("dotenv").config();
+const PORT = process.env.PORT || 4538;
+const HOST_NAME = "mylah.tech"
 
+const { log } = require("console");
+const fs = require("fs");
+const express = require("express");
+require("dotenv").config();
 const app = express();
-expressWs(app);
+
+const https = require("https");
+const httpsServer = https.createServer({
+        key: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/privkey.pem`),
+        cert: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/fullchain.pem`),
+}, app).listen(PORT, function (req, res) {
+        console.log(`Server started at port ${PORT}`);
+});
+
+const expressWs = require("express-ws");
+expressWs(app, httpsServer);
 
 app.use(express.static("../clients/dist"));
 app.use("/host", express.static("../clients/dist"));
@@ -19,7 +31,6 @@ const messages = {};
 let messageIndex = 0;
 
 // open a log file to write the messages into
-const fs = require("fs");
 const path = require("path");
 const logFile = path.join(__dirname, "log.txt");
 // open the file for writing
@@ -112,7 +123,14 @@ app.ws("/ws/render", (ws, req) => {
 	});
 });
 
-const PORT = process.env.PORT || 4538;
-app.listen(PORT, () => {
-	console.log(`Server is listening on port ${PORT}`);
-});
+//app.listen(PORT, () => {
+//	console.log(`Server is listening on port ${PORT}`);
+//});
+
+
+//const httpsServer = https.createServer({
+//        key: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/privkey.pem`),
+//        cert: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/fullchain.pem`),
+//}, app).listen(PORT, function (req, res) {
+//        console.log(`Server started at port ${PORT}`);
+//});

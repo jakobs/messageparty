@@ -6,7 +6,7 @@ export default function Render() {
 	const [message, setMessage] = useState();
 
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
-		`ws://${window.location.host}/ws/render`,
+		`wss://${window.location.host}/ws/render`,
 		{
 			share: false,
 			shouldReconnect: () => true,

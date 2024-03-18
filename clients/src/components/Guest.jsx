@@ -3,7 +3,7 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 
 export default function Guest() {
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
-		`ws://${window.location.host}/ws/guest`,
+		`wss://${window.location.host}/ws/guest`,
 		{
 			share: false,
 			shouldReconnect: () => true,

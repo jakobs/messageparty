@@ -8,8 +8,10 @@ import spamAudioUrl from "../assets/spam.mp3";
 export default function Host() {
 	const [messages, setMessages] = useState([]);
 
+	// depending if the connection uses ssl, the url will be different
+	const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
 	const { sendMessage, lastMessage, readyState } = useWebSocket(
-		`wss://${window.location.host}/ws/host`,
+		`${wsProtocol}://${window.location.host}/ws/host`,
 		{
 			share: false,
 			shouldReconnect: () => true,

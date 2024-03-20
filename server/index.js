@@ -7,16 +7,27 @@ const express = require("express");
 require("dotenv").config();
 const app = express();
 
-const https = require("https");
-const httpsServer = https.createServer({
-        key: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/privkey.pem`),
-        cert: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/fullchain.pem`),
-}, app).listen(PORT, function (req, res) {
-        console.log(`Server started at port ${PORT}`);
-});
-
-const expressWs = require("express-ws");
-expressWs(app, httpsServer);
+// if the command line argument is "--dev", then use http instead of https
+if (process.argv[2] === "--dev") {
+	const http = require("http");
+	const httpServer = http.createServer(app).listen(PORT, function (req, res) {
+		console.log(`http server started at port ${PORT}`);
+	});
+	const expressWs = require("express-ws");
+	expressWs(app, httpServer);
+}
+else {
+	const https = require("https");
+	const httpsOptions = {
+		key: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/privkey.pem`),
+		cert: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/fullchain.pem`),
+	};
+	const httpsServer = https.createServer(httpsOptions, app).listen(PORT, function (req, res) {
+		console.log(`https server started at port ${PORT}`);
+	});
+	const expressWs = require("express-ws");
+	expressWs(app, httpsServer);
+}
 
 app.use(express.static("../clients/dist"));
 app.use("/host", express.static("../clients/dist"));
@@ -122,15 +133,3 @@ app.ws("/ws/render", (ws, req) => {
 		renderClient = null;
 	});
 });
-
-//app.listen(PORT, () => {
-//	console.log(`Server is listening on port ${PORT}`);
-//});
-
-
-//const httpsServer = https.createServer({
-//        key: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/privkey.pem`),
-//        cert: fs.readFileSync(`/etc/letsencrypt/live/${HOST_NAME}/fullchain.pem`),
-//}, app).listen(PORT, function (req, res) {
-//        console.log(`Server started at port ${PORT}`);
-//});
